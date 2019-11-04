@@ -30,7 +30,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/createQuizWithQuestions", method = RequestMethod.POST)
-    public ResponseEntity<String> createQuizWithQuestions(@RequestBody Quiz quiz) throws ResourceNotFoundException{
+    public ResponseEntity<String> createQuizWithQuestions(@RequestBody Quiz quiz) throws Exception {
         return quizService.createQuizWithQuestions(quiz);
     }
 
@@ -44,8 +44,8 @@ public class QuizController {
         return quizService.updateQuiz(quiz, quizId);
     }
 
-    @RequestMapping(value = "/updateQuiz/addQuestion/{quizId}/{questionId}", method = RequestMethod.PUT)
-    public ResponseEntity<Quiz> addQuestion(@PathVariable String quizId, @PathVariable String questionId){
+    @RequestMapping(value = "/updateQuiz/quiz/{quizId}/addQuestion/{questionId}", method = RequestMethod.PUT)
+    public ResponseEntity<Quiz> addQuestion(@PathVariable String quizId, @PathVariable String questionId) throws ResourceNotFoundException {
         return quizService.addQuestion(quizId, questionId);
     }
 }
