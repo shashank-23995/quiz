@@ -1,0 +1,19 @@
+Quiz application
+
+Roles -
+    1) Admin
+    2) Candidate
+
+Admin -
+Add new questions
+Update existing questions
+Delete existing questions
+
+Create new quiz with existing questions
+Update quiz (update questions in the quiz)
+Delete existing quiz
+
+Assign quiz to candidates
+
+Candidate -
+Apply for quiz (candidate can only apply for quiz assigned to him by admin)
