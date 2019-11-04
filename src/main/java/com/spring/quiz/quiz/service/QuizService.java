@@ -110,7 +110,16 @@ public class QuizService {
                 while (iterator.hasNext()){
                     Question singleQuestion = (Question) iterator.next();
                     Optional<Question> optionalQuestion = questionRepository.findById(singleQuestion.getId());
-                    if(!optionalQuestion.isPresent()){
+                    if(optionalQuestion.isPresent()){
+                        Question question = optionalQuestion.get();
+                        if(question.getStatement() == "" || question.getOption1() == "" || question.getOption2()== "" || question.getOption3()== "" || question.getOption4()== "" || question.getAnswer() ==""){
+                           throw new ResourceNotFoundException("Question data is incomplete");
+                        } else {
+                            if (!(question.getAnswer().equals(question.getOption1()) || question.getAnswer().equals(question.getOption2()) || question.getAnswer().equals(question.getOption3()) || question.getAnswer().equals(question.getOption4()))){
+                                throw new ResourceNotFoundException("answer does not match any option");
+                            }
+                        }
+                    } else {
                         questionFlag = false;
                     }
                 }
