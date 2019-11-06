@@ -1,6 +1,7 @@
 package com.spring.quiz.quiz.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ public class Quiz {
     private String id;
     @NotNull(message = "name is required")
     private String name;
+    @DBRef
     @NotNull(message = "question set is required")
     private Set<Question> questionSet;
 

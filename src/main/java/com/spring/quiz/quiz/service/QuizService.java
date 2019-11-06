@@ -51,7 +51,7 @@ public class QuizService {
     public ResponseEntity<Quiz> updateQuiz(Quiz quiz, String quizId){
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if(quizOptional.isPresent()){
-            quiz.setId(quizId);
+//            quiz.setId(quizId);
             quizRepository.save(quiz);
             return ResponseEntity.status(200).build();
         } else {
