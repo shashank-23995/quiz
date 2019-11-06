@@ -8,10 +8,7 @@ import com.spring.quiz.quiz.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/results")
@@ -44,7 +41,12 @@ public class ResultController {
     }
 
     @RequestMapping(value = "/user/{userId}/quiz/{quizId}", method = RequestMethod.GET)
-    public ResponseEntity<Result> getResultByUserQuiz(@PathVariable String userId, @PathVariable String quizId){
+    public ResponseEntity<Result> getResultByUserQuiz(@PathVariable String userId, @PathVariable String quizId) throws ResourceNotFoundException {
         return resultService.getResultByUserQuiz(userId, quizId);
+    }
+
+    @RequestMapping(value = "/submitQuiz/user/{userId}/quiz/{quizId}", method = RequestMethod.POST)
+    public ResponseEntity<Result> submitQuiz(@PathVariable String userId, @PathVariable String quizId, @RequestBody Result result) throws ResourceNotFoundException {
+        return resultService.submitQuiz(userId, quizId, result);
     }
 }
