@@ -4,7 +4,6 @@ import com.spring.quiz.quiz.exceptionhandling.ResourceNotFoundException;
 import com.spring.quiz.quiz.model.Question;
 import com.spring.quiz.quiz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +25,13 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/createQuestion", method = RequestMethod.POST)
-    public ResponseEntity<String> createQuestion(@Valid @RequestBody Question question) throws ResourceNotFoundException{
+    public ResponseEntity<Question> createQuestion(@Valid @RequestBody Question question) throws ResourceNotFoundException{
         return questionService.createQuestion(question);
 //         ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @RequestMapping(value = "/deleteQuestion/{questionId}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteQuestion(@PathVariable String questionId) throws ResourceNotFoundException {
+    public ResponseEntity<Question> deleteQuestion(@PathVariable String questionId) throws ResourceNotFoundException {
         return questionService.deleteQuestion(questionId);
 //        return ResponseEntity.status(HttpStatus.resolve(200)).build();
     }

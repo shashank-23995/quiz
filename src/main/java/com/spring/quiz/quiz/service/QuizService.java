@@ -104,7 +104,7 @@ public class QuizService {
     }
 
 //    public ResponseEntity<String> createQuizWithQuestions(String quizName, String[] quizQuestionSet) throws ResourceNotFoundException {
-    public ResponseEntity<String> createQuizWithQuestions(Quiz quiz) throws Exception {
+    public ResponseEntity<Quiz> createQuizWithQuestions(Quiz quiz) throws Exception {
 //        Set<Question> newQuestionSet=null;
         boolean questionFlag = true;
         try {
@@ -133,7 +133,7 @@ public class QuizService {
                 }
                 if(questionFlag){
                     quizRepository.insert(quiz);
-                    return ResponseEntity.ok("Quiz created successfully");
+                    return ResponseEntity.ok(quiz);
                 } else {
                     throw new ResourceNotFoundException("One of the question is missing from the list");
                 }

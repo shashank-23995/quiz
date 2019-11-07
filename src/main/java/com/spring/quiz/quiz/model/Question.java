@@ -3,6 +3,7 @@ package com.spring.quiz.quiz.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Document
@@ -10,6 +11,7 @@ public class Question {
     @Id
     private String id;
     @NotNull(message = "statement is required")
+    @NotEmpty
     private String statement;
     @NotNull(message = "option1 is required")
     private String option1;
@@ -23,6 +25,16 @@ public class Question {
     private String answer;
 
     public Question(){
+    }
+
+    public Question(String id, String statement, String option1, String option2, String option3, String option4, String answer){
+        this.id = id;
+        this.statement = statement;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
+        this.answer = answer;
     }
 
     public String getId() {

@@ -21,6 +21,17 @@ public class User {
     @NotNull(message = "role is required")
     private String role;
 
+    public User(){
+    }
+
+    public User(String id, String firstName, String lastName, String email, String password){
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     public String getId() {
         return id;
     }

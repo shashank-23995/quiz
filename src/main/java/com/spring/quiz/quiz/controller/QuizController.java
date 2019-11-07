@@ -30,7 +30,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/createQuizWithQuestions", method = RequestMethod.POST)
-    public ResponseEntity<String> createQuizWithQuestions(@RequestBody Quiz quiz) throws Exception {
+    public ResponseEntity<Quiz> createQuizWithQuestions(@RequestBody Quiz quiz) throws Exception {
         return quizService.createQuizWithQuestions(quiz);
     }
 

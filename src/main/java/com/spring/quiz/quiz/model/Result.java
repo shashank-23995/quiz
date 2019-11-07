@@ -15,6 +15,17 @@ public class Result {
     private int obtainedMarks;
     private int totalMarks;
 
+    public Result() {
+    }
+
+    public Result(String id, String userId, String quizId, HashMap selectedAnswer, int obtainedMarks, int totalMarks) {
+        this.id = id;
+        this.userId = userId;
+        this.quizId = quizId;
+        this.selectedAnswer = selectedAnswer;
+        this.obtainedMarks = obtainedMarks;
+        this.totalMarks = totalMarks;
+    }
     public String getId() {
         return id;
     }

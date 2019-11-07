@@ -32,7 +32,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    public ResponseEntity<String> createUser(@Valid @RequestBody User user) throws ResourceNotFoundException{
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) throws ResourceNotFoundException{
         return userService.createUser(user);
 //        return ResponseEntity.status(HttpStatus.CREATED).build();
     }

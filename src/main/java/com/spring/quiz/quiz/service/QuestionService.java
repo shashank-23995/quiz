@@ -20,12 +20,12 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public ResponseEntity<String> createQuestion(Question question) throws ResourceNotFoundException{
+    public ResponseEntity<Question> createQuestion(Question question) throws ResourceNotFoundException{
         try {
             if(question.getStatement() !="" && question.getOption1() !="" && question.getOption2() !="" && question.getOption3() !="" && question.getOption4() !=""){
                 if(question.getOption1().equals(question.getAnswer()) || question.getOption2().equals(question.getAnswer()) || question.getOption3().equals(question.getAnswer()) || question.getOption4().equals(question.getAnswer())){
                     questionRepository.insert(question);
-                    return ResponseEntity.ok("Question created successfully");
+                    return ResponseEntity.ok(question);
                 } else {
                     throw new ResourceNotFoundException("Answer does not match with options");
                 }
@@ -37,12 +37,13 @@ public class QuestionService {
         }
     }
 
-    public ResponseEntity<String> deleteQuestion(String questionId) throws ResourceNotFoundException{
+    public ResponseEntity<Question> deleteQuestion(String questionId) throws ResourceNotFoundException{
         try {
             Optional<Question> questionOptional = questionRepository.findById(questionId);
             if(questionOptional.isPresent()){
+                Question question = questionOptional.get();
                 questionRepository.deleteById(questionId);
-                return ResponseEntity.ok("question deleted successfully");
+                return ResponseEntity.ok(question);
             } else {
                 throw new ResourceNotFoundException("Question not found");
 //                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -22,15 +22,16 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> retrieveUsers() {
+        System.out.println("Getting data from DB - " + userRepository.findAll());
         return userRepository.findAll();
     }
 
-    public ResponseEntity<String> createUser(User user) throws ResourceNotFoundException{
+    public ResponseEntity<User> createUser(User user) throws ResourceNotFoundException{
         try {
             if(user.getFirstName()!="" && user.getLastName()!="" && user.getEmail()!="" && user.getPassword()!="" && user.getRole()!=""){
                 user.setPassword(encoder.encode(user.getPassword()));
                 userRepository.insert(user);
-                return ResponseEntity.ok("User created successfullty");
+                return ResponseEntity.ok(user);
             } else {
                 throw new ResourceNotFoundException("User data is incomplete");
             }
