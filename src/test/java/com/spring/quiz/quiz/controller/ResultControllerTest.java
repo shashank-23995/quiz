@@ -79,7 +79,15 @@ public class ResultControllerTest {
     }
 
     @Test
-    public void selectAnswer() {
+    public void selectAnswer() throws Exception {
+        String mockSelectedOption = "test_selected_option";
+        Mockito.when(resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), "test_selected_option", true)).thenReturn(ResponseEntity.ok(mockResult));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/results/submitAnswer/quiz/{quizId}/question/{questionId}/answer/{selectedOption}", mockQuiz.getId(), mockQuestion.getId(), mockSelectedOption)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test

@@ -2,9 +2,12 @@ package com.spring.quiz.quiz.service;
 
 import com.spring.quiz.quiz.exceptionhandling.ResourceNotFoundException;
 import com.spring.quiz.quiz.model.Question;
+import com.spring.quiz.quiz.repository.QuestionRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +20,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 public class QuestionServiceTest {
 
-    @MockBean
+    @InjectMocks
     private QuestionService questionService;
+
+    @Mock
+    QuestionRepository questionRepository;
+
+    @Mock
+    Question question;
 
     Question mockQuestion;
     ArrayList<Question> mockQuestionList;

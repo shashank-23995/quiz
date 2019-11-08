@@ -30,7 +30,7 @@ public class UserService {
         try {
             if(user.getFirstName()!="" && user.getLastName()!="" && user.getEmail()!="" && user.getPassword()!="" && user.getRole()!=""){
                 user.setPassword(encoder.encode(user.getPassword()));
-                userRepository.insert(user);
+                userRepository.save(user);
                 return ResponseEntity.ok(user);
             } else {
                 throw new ResourceNotFoundException("User data is incomplete");

@@ -3,25 +3,36 @@ package com.spring.quiz.quiz.service;
 import com.spring.quiz.quiz.exceptionhandling.ResourceNotFoundException;
 import com.spring.quiz.quiz.model.Question;
 import com.spring.quiz.quiz.model.Quiz;
+import com.spring.quiz.quiz.repository.QuizRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 public class QuizServiceTest {
 
-    @MockBean
+    @InjectMocks
     QuizService quizService;
+
+    @Mock
+    QuizRepository quizRepository;
+
+    @Mock
+    Question question;
+
+    @Mock
+    Quiz quiz;
 
     Quiz mockQuiz;
     ArrayList<Quiz> mockQuizList;
@@ -30,7 +41,7 @@ public class QuizServiceTest {
 
     @Before
     public void setup() {
-        mockQuestion = new Question("12345", "test_statement","test_option_1", "test_option_2", "test_option_3", "test_option_4", "test_answer");
+        mockQuestion = new Question("12345", "test_statement", "test_option_1", "test_option_2", "test_option_3", "test_option_4", "test_answer");
         mockQuestionSet = new HashSet<>();
         mockQuestionSet.add(mockQuestion);
 
@@ -57,8 +68,9 @@ public class QuizServiceTest {
 
     @Test
     public void deleteQuiz() {
-        quizService.deleteQuiz(mockQuiz.getId());
-        Mockito.verify(quizService, Mockito.times(1)).deleteQuiz(mockQuiz.getId());
+        Mockito.when(quizRepository.findById(mockQuiz.getId())).thenReturn(Optional.ofNullable(mockQuiz));
+        assertEquals(ResponseEntity.status(200).build(), quizService.deleteQuiz(mockQuiz.getId()));
+//        Mockito.verify(quizService, Mockito.times(1)).deleteQuiz(mockQuiz.getId());
     }
 
     @Test

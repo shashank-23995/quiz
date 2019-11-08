@@ -25,13 +25,13 @@ public class ResultController {
     private QuestionService questionService;
 
     @RequestMapping(value = "/submitAnswer/quiz/{quizId}/question/{questionId}/answer/{selectedOption}", method = RequestMethod.GET)
-    public ResponseEntity<String> selectAnswer(@PathVariable String quizId, @PathVariable String questionId, @PathVariable String selectedOption) throws ResourceNotFoundException {
+    public ResponseEntity<Result> selectAnswer(@PathVariable String quizId, @PathVariable String questionId, @PathVariable String selectedOption) throws ResourceNotFoundException {
 //        return resultService.selectAnswer(quizId, questionId, selectedOption);
 
 //        quizService.findQuizQuestion(quizId, questionId);
         boolean answerStatus = questionService.validateAnswer(questionId, selectedOption);
-        resultService.updateResult(quizId, questionId, selectedOption, answerStatus);
-        return ResponseEntity.ok().build();
+        return resultService.updateResult(quizId, questionId, selectedOption, answerStatus);
+//        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/user/{userId}/quiz/{quizId}", method = RequestMethod.GET)

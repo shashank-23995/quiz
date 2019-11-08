@@ -78,8 +78,8 @@ public class QuestionService {
     }
 
     public ResponseEntity<Question> getQuestionByStatement(String questionStatement){
-        Question q = questionRepository.getQuestionByStatement(questionStatement);
-        return ResponseEntity.ok(q);
+        Question question = questionRepository.getQuestionByStatement(questionStatement);
+        return ResponseEntity.ok(question);
     }
 
     public boolean validateAnswer(String questionId, String selectedOption) throws ResourceNotFoundException{

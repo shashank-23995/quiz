@@ -52,9 +52,6 @@ public class UserControllerTest {
     @Mock
     private UserRepository userRepository;
 
-//    @Autowired
-//    ObjectMapper mapper;
-
     User mockUser;
     String mockUserToString;
     ArrayList<User> mockUserList;

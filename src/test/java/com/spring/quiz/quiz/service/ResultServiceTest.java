@@ -5,27 +5,38 @@ import com.spring.quiz.quiz.model.Question;
 import com.spring.quiz.quiz.model.Quiz;
 import com.spring.quiz.quiz.model.Result;
 import com.spring.quiz.quiz.model.User;
+import com.spring.quiz.quiz.repository.ResultRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 public class ResultServiceTest {
 
-    @MockBean
+    @InjectMocks
     ResultService resultService;
+
+    @Mock
+    ResultRepository resultRepository;
+
+    @Mock
+    Quiz quiz;
+
+    @Mock
+    User user;
+
+    @Mock
+    Question question;
 
     Result mockResult;
     ArrayList<Result> mockResultList;
