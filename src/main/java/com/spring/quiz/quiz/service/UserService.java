@@ -40,12 +40,13 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> deleteUser(String userId) throws ResourceNotFoundException{
+    public ResponseEntity<User> deleteUser(String userId) throws ResourceNotFoundException{
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()){
+                User user = optionalUser.get();
                 userRepository.deleteById(userId);
-                return ResponseEntity.ok("user deleted successfully");
+                return ResponseEntity.ok(user);
             } else {
                 throw new ResourceNotFoundException("User not found");
             }
@@ -61,7 +62,7 @@ public class UserService {
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()){
-//                user.setId(userId);
+                user.setId(userId);
                 userRepository.save(user);
                 return ResponseEntity.status(HttpStatus.OK).build();
             } else {

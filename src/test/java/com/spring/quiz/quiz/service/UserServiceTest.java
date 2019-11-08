@@ -40,7 +40,7 @@ public class UserServiceTest {
 
     @Before
     public void setup() throws JsonProcessingException {
-        mockUser = new User("12345","test", "test", "test@gmail.com", "test");
+        mockUser = new User("12345","test", "test", "test@gmail.com", "test", "CANDIDATE");
         mockUserList = new ArrayList();
         mockUserList.add(mockUser);
 //        mockUserToString = mapper.writeValueAsString(mockUser);
@@ -48,7 +48,7 @@ public class UserServiceTest {
 
     @Test
     public void retrieveUsers() {
-        mockUser = new User("12345","test", "test", "test@gmail.com", "test");
+        mockUser = new User("12345","test", "test", "test@gmail.com", "test", "CANDIDATE");
         mockUserList = new ArrayList();
         mockUserList.add(mockUser);
 

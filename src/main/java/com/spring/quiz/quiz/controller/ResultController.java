@@ -30,14 +30,8 @@ public class ResultController {
 
 //        quizService.findQuizQuestion(quizId, questionId);
         boolean answerStatus = questionService.validateAnswer(questionId, selectedOption);
-        System.out.println("answerStatus - " + answerStatus);
         resultService.updateResult(quizId, questionId, selectedOption, answerStatus);
-        if(answerStatus){
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.ok().build();
-        }
-//        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/user/{userId}/quiz/{quizId}", method = RequestMethod.GET)

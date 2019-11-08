@@ -38,14 +38,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/deleteUser/{userId}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUser(@PathVariable String userId) throws ResourceNotFoundException {
+    public ResponseEntity<User> deleteUser(@PathVariable String userId) throws ResourceNotFoundException {
         return userService.deleteUser(userId);
 //        return ResponseEntity.status(HttpStatus.resolve(200)).build();
     }
 
     @RequestMapping(value = "/updateUser/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, String id) throws ResourceNotFoundException{
-        return userService.updateUser(user, id);
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String userId) throws ResourceNotFoundException{
+        return userService.updateUser(user, userId);
 //        return ResponseEntity.status(HttpStatus.resolve(200)).build();
     }
 }

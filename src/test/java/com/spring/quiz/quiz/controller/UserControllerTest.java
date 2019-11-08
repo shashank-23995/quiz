@@ -1,6 +1,7 @@
 package com.spring.quiz.quiz.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.quiz.quiz.QuizApplication;
 import com.spring.quiz.quiz.QuizApplicationTests;
 import com.spring.quiz.quiz.exceptionhandling.ResourceNotFoundException;
@@ -58,13 +59,16 @@ public class UserControllerTest {
     String mockUserToString;
     ArrayList<User> mockUserList;
     String requestURI = "/users/getAll";
+    ObjectMapper mapper;
 
     @Before
     public void setup() throws JsonProcessingException {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockUser = new User("12345","test", "test", "test@gmail.com", "test");
+        mockUser = new User("12345","test", "test", "test@gmail.com", "test", "CANDIDATE");
         mockUserList = new ArrayList();
         mockUserList.add(mockUser);
+        mapper = new ObjectMapper();
+        mockUserToString = mapper.writeValueAsString(mockUser);
 //        mockUserToString = mapper.writeValueAsString(mockUser);
     }
 
@@ -106,8 +110,8 @@ public class UserControllerTest {
 //                .andExpect(MockMvcResultMatchers.status().isOk());
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.employees").exists())
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].employeeId").isNotEmpty());
-         JSONAssert.assertEquals(expected, result.getResponse()
-                .getContentAsString(), false);
+//         JSONAssert.assertEquals(expected, result.getResponse()
+//                .getContentAsString(), false);
     }
 
     @Test
@@ -127,20 +131,44 @@ public class UserControllerTest {
     }
 
     @Test
-    public void createUser() throws ResourceNotFoundException {
+    public void createUser() throws Exception {
+//        Mockito.when(userService.createUser(mockUser)).thenReturn(ResponseEntity.ok(mockUser));
+//        assertEquals(ResponseEntity.ok(mockUser), userService.createUser(mockUser));
         Mockito.when(userService.createUser(mockUser)).thenReturn(ResponseEntity.ok(mockUser));
-        assertEquals(ResponseEntity.ok(mockUser), userService.createUser(mockUser));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/createUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mockUserToString))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+//        JSONAssert.assertEquals(String.valueOf(mockUser), result.getResponse()
+//                .getContentAsString(), false);
     }
 
     @Test
-    public void deleteUser() throws ResourceNotFoundException {
-        userService.deleteUser(mockUser.getId());
-        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUser.getId());
+    public void deleteUser() throws Exception {
+//        userService.deleteUser(mockUser.getId());
+//        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUser.getId());
+        Mockito.when(userService.deleteUser(mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/users/deleteUser/{userId}", mockUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void updateUser() throws ResourceNotFoundException {
+    public void updateUser() throws Exception {
+//        Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
+//        assertEquals(ResponseEntity.ok(mockUser), userService.updateUser(mockUser, mockUser.getId()));
         Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
-        assertEquals(ResponseEntity.ok(mockUser), userService.updateUser(mockUser, mockUser.getId()));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/users/updateUser/{quizId}",mockUser.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mockUserToString))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+//        JSONAssert.assertEquals(String.valueOf(mockUser), result.getResponse()
+//                .getContentAsString(), false);
     }
 }

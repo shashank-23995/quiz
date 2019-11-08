@@ -11,7 +11,6 @@ import com.spring.quiz.quiz.repository.QuizRepository;
 import com.spring.quiz.quiz.repository.ResultRepository;
 import com.spring.quiz.quiz.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +58,7 @@ public class ResultService {
         return ResponseEntity.ok().build();
     }
 
-    public void updateResult(String quizId, String questionId, String selectedOption, boolean answerStatus) {
+    public ResponseEntity<Result> updateResult(String quizId, String questionId, String selectedOption, boolean answerStatus) {
         User user = userRepository.findByUsername(JwtRequestFilter.token_username.get());
         Quiz quiz = new Quiz();
         Optional<Quiz> optionalQuiz = quizRepository.findById(quizId);
@@ -82,6 +81,8 @@ public class ResultService {
         result.setSelectedAnswer(map);
         result.setTotalMarks(quiz.getQuestionSet().size());
         resultRepository.save(result);
+
+        return ResponseEntity.ok(result);
     }
 
     public ResponseEntity<Result> getResultByUserQuiz(String userId, String quizId) throws ResourceNotFoundException {
