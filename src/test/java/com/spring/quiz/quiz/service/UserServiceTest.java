@@ -76,7 +76,27 @@ public class UserServiceTest {
     @Test
     public void createUser() throws ResourceNotFoundException {
 //        Mockito.when(userService.createUser(mockUser)).thenReturn(new ResponseEntity<User>(mockUser,HttpStatus.OK));
-        assertEquals(mockUser, userService.createUser(mockUser).getBody());
+        Mockito.when(userService.createUser(mockUser)).thenReturn(mockUser);
+        assertEquals(mockUser, userService.createUser(mockUser));
+    }
+
+    @Test
+    public void deleteUser() throws ResourceNotFoundException {
+        Mockito.when(userRepository.findById(mockUser.getId())).thenReturn(Optional.ofNullable(mockUser));
+        assertEquals(mockUser, userService.deleteUser(mockUser.getId()));
+    }
+
+    @Test
+    public void updateUser() throws ResourceNotFoundException {
+        Mockito.when(userRepository.findById(mockUser.getId())).thenReturn(Optional.ofNullable(mockUser));
+        assertEquals(null, userService.updateUser(mockUser, mockUser.getId()));
+    }
+
+    @Test
+    public void welcomeMessage() {
+        String mockWelcomeMessage = "Welcome to quiz application";
+//        Mockito.when(userService.welcomeMessage()).thenReturn(mockWelcomeMessage);
+        assertEquals(mockWelcomeMessage, userService.welcomeMessage());
     }
 
     @Test
@@ -85,26 +105,20 @@ public class UserServiceTest {
         user.setFirstName("test");
         user.setLastName("test");
         user.setRole("");
-        Mockito.when(userService.createUser(user)).thenReturn(ResponseEntity.ok(user));
-        assertEquals(ResponseEntity.ok(user), userService.createUser(user));
+//        Mockito.when(userService.createUser(user)).thenReturn(ResponseEntity.ok(user));
+        Mockito.when(userService.createUser(user)).thenReturn(user);
+        assertEquals(user, userService.createUser(user));
     }
 
     @Test
-    public void deleteUser() throws ResourceNotFoundException {
-        userService.deleteUser(mockUser.getId());
-        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUser.getId());
+    public void deleteUserNotFound() throws ResourceNotFoundException {
+//        Mockito.when(userRepository.findById(mockUser.getId())).thenReturn(Optional.ofNullable(mockUser));
+        assertEquals(mockUser, userService.deleteUser(mockUser.getId()));
     }
 
     @Test
-    public void updateUser() throws ResourceNotFoundException {
-        Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
-        assertEquals(ResponseEntity.ok(mockUser), userService.updateUser(mockUser, mockUser.getId()));
-    }
-
-    @Test
-    public void welcomeMessage() {
-        String mockWelcomeMessage = "Welcome User";
-        Mockito.when(userService.welcomeMessage()).thenReturn(mockWelcomeMessage);
-        assertEquals(mockWelcomeMessage, userService.welcomeMessage());
+    public void updateUserNotFound() throws ResourceNotFoundException {
+//        Mockito.when(userRepository.findById(mockUser.getId())).thenReturn(Optional.ofNullable(mockUser));
+        assertEquals(null, userService.updateUser(mockUser, mockUser.getId()));
     }
 }

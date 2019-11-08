@@ -131,12 +131,12 @@ public class UserControllerTest {
     public void createUser() throws Exception {
 //        Mockito.when(userService.createUser(mockUser)).thenReturn(ResponseEntity.ok(mockUser));
 //        assertEquals(ResponseEntity.ok(mockUser), userService.createUser(mockUser));
-        Mockito.when(userService.createUser(mockUser)).thenReturn(ResponseEntity.ok(mockUser));
+        Mockito.when(userService.createUser(mockUser)).thenReturn(mockUser);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/createUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockUserToString))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 //        JSONAssert.assertEquals(String.valueOf(mockUser), result.getResponse()
 //                .getContentAsString(), false);
@@ -146,7 +146,7 @@ public class UserControllerTest {
     public void deleteUser() throws Exception {
 //        userService.deleteUser(mockUser.getId());
 //        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUser.getId());
-        Mockito.when(userService.deleteUser(mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
+        Mockito.when(userService.deleteUser(mockUser.getId())).thenReturn(mockUser);
         mockMvc.perform(MockMvcRequestBuilders
                 .delete("/users/deleteUser/{userId}", mockUser.getId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -158,7 +158,7 @@ public class UserControllerTest {
     public void updateUser() throws Exception {
 //        Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
 //        assertEquals(ResponseEntity.ok(mockUser), userService.updateUser(mockUser, mockUser.getId()));
-        Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(ResponseEntity.ok(mockUser));
+        Mockito.when(userService.updateUser(mockUser, mockUser.getId())).thenReturn(mockUser);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/users/updateUser/{quizId}",mockUser.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockUserToString))

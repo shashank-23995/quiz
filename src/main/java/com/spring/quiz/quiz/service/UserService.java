@@ -26,12 +26,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<User> createUser(User user) throws ResourceNotFoundException{
+    public User createUser(User user) throws ResourceNotFoundException{
         try {
             if(user.getFirstName()!="" && user.getLastName()!="" && user.getEmail()!="" && user.getPassword()!="" && user.getRole()!=""){
                 user.setPassword(encoder.encode(user.getPassword()));
-                userRepository.save(user);
-                return ResponseEntity.ok(user);
+                User user1 = userRepository.insert(user);
+                return user1;
             } else {
                 throw new ResourceNotFoundException("User data is incomplete");
             }
@@ -40,13 +40,14 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<User> deleteUser(String userId) throws ResourceNotFoundException{
+    public User deleteUser(String userId) throws ResourceNotFoundException{
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()){
                 User user = optionalUser.get();
                 userRepository.deleteById(userId);
-                return ResponseEntity.ok(user);
+//                return ResponseEntity.ok(user);
+                return user;
             } else {
                 throw new ResourceNotFoundException("User not found");
             }
@@ -58,13 +59,12 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<User> updateUser(User user, String userId) throws ResourceNotFoundException{
+    public User updateUser(User user, String userId) throws ResourceNotFoundException{
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()){
                 user.setId(userId);
-                userRepository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return userRepository.save(user);
             } else {
                 throw new ResourceNotFoundException();
 //            throw new RuntimeException();
