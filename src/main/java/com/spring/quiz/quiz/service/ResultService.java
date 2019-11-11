@@ -58,7 +58,7 @@ public class ResultService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<Result> updateResult(String quizId, String questionId, String selectedOption, boolean answerStatus) {
+    public Result updateResult(String quizId, String questionId, String selectedOption, boolean answerStatus) {
         User user = userRepository.findByUsername(JwtRequestFilter.token_username.get());
         Quiz quiz = new Quiz();
         Optional<Quiz> optionalQuiz = quizRepository.findById(quizId);
@@ -80,25 +80,26 @@ public class ResultService {
         }
         result.setSelectedAnswer(map);
         result.setTotalMarks(quiz.getQuestionSet().size());
-        resultRepository.save(result);
-
-        return ResponseEntity.ok(result);
+        Result result1 =  resultRepository.save(result);
+        return result1;
+//        return ResponseEntity.ok(result);
     }
 
-    public ResponseEntity<Result> getResultByUserQuiz(String userId, String quizId) throws ResourceNotFoundException {
+    public Result getResultByUserQuiz(String userId, String quizId) throws ResourceNotFoundException {
         try {
             Result result = resultRepository.getResultByUserQuiz(userId, quizId);
             if(result == null){
                 throw new ResourceNotFoundException("Either user id or quiz id is invalid");
             }
-            return ResponseEntity.ok(result);
+            return result;
+//            return ResponseEntity.ok(result);
 //        return new ResponseEntity<>("result object will be displayed here", HttpStatus.NOT_FOUND);
         } catch (ResourceNotFoundException exception) {
             throw new ResourceNotFoundException(exception.getMessage());
         }
     }
 
-    public ResponseEntity<Result> submitQuiz(String userId, String quizId, Result result) throws ResourceNotFoundException {
+    public Result submitQuiz(String userId, String quizId, Result result) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         try {
@@ -125,8 +126,9 @@ public class ResultService {
 //                    System.out.println("Key = " + entry.getKey() +
 //                            ", Value = " + entry.getValue());
                 }
-                resultRepository.insert(result);
-                return ResponseEntity.ok(result);
+                Result result1 = resultRepository.insert(result);
+                return result1;
+//                return ResponseEntity.ok(result);
             } else {
                 throw new ResourceNotFoundException("Either user id or question id is invalid");
             }

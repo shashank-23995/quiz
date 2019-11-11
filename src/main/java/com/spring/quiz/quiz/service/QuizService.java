@@ -6,8 +6,6 @@ import com.spring.quiz.quiz.model.Quiz;
 import com.spring.quiz.quiz.repository.QuestionRepository;
 import com.spring.quiz.quiz.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,41 +23,41 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
-    public ResponseEntity<Quiz> createQuiz(Quiz quiz) throws ResourceNotFoundException{
+    public Quiz createQuiz(Quiz quiz) throws ResourceNotFoundException{
         try {
             if(!quiz.getName().equals("")) {
-                quizRepository.insert(quiz);
+                return quizRepository.insert(quiz);
             } else {
                 throw new ResourceNotFoundException();
             }
         } catch (ResourceNotFoundException exception) {
             throw new ResourceNotFoundException("Quiz name not found");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<Quiz> deleteQuiz(String quizId){
+    public Quiz deleteQuiz(String quizId){
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if(quizOptional.isPresent()){
+            Quiz quiz = quizOptional.get();
             quizRepository.deleteById(quizId);
-            return ResponseEntity.status(200).build();
+            return quiz;
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return null;
         }
     }
 
-    public ResponseEntity<Quiz> updateQuiz(Quiz quiz, String quizId){
+    public Quiz updateQuiz(Quiz quiz, String quizId){
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if(quizOptional.isPresent()){
             quiz.setId(quizId);
-            quizRepository.save(quiz);
-            return ResponseEntity.status(200).build();
+            return quizRepository.save(quiz);
+//             ResponseEntity.status(200).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return null;
         }
     }
 
-    public ResponseEntity<Quiz> addQuestion(String quizId, String questionId) throws ResourceNotFoundException {
+    public Quiz addQuestion(String quizId, String questionId) throws ResourceNotFoundException {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Optional<Quiz> optionalQuiz = quizRepository.findById(quizId);
         try {
@@ -70,8 +68,8 @@ public class QuizService {
                 quizQuestionSet.add(question);
                 quiz.setQuestionSet(quizQuestionSet);
 //            q.setId(quizId);
-                quizRepository.save(quiz);
-                return ResponseEntity.status(200).build();
+                return quizRepository.save(quiz);
+//                return ResponseEntity.status(200).build();
             } else {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
                 throw new ResourceNotFoundException("Either quiz id or question id is invalid");
@@ -94,26 +92,26 @@ public class QuizService {
                         return true;
                     }
                 }
+                    return false;
             } else {
                 throw new ResourceNotFoundException();
             }
         } catch (ResourceNotFoundException exception){
             throw new ResourceNotFoundException("Question not found");
         }
-    return false;
     }
 
 //    public ResponseEntity<String> createQuizWithQuestions(String quizName, String[] quizQuestionSet) throws ResourceNotFoundException {
-    public ResponseEntity<Quiz> createQuizWithQuestions(Quiz quiz) throws Exception {
+    public Quiz createQuizWithQuestions(Quiz quiz) throws Exception {
 //        Set<Question> newQuestionSet=null;
         boolean questionFlag = true;
         try {
             if(!quiz.getName().equals("")) {
 //                quizRepository.insert(quiz);
                Set<Question> quizQuestionSet= quiz.getQuestionSet();
-               if (quizQuestionSet.size() < 10){
-                   throw new Exception("minimum 10 questions must be provided to create quiz");
-               }
+//               if (quizQuestionSet.size() < 10){
+//                   throw new Exception("minimum 10 questions must be provided to create quiz");
+//               }
                 Iterator iterator = quizQuestionSet.iterator();
                 while (iterator.hasNext()){
                     Question singleQuestion = (Question) iterator.next();
@@ -132,8 +130,9 @@ public class QuizService {
                     }
                 }
                 if(questionFlag){
-                    quizRepository.insert(quiz);
-                    return ResponseEntity.ok(quiz);
+                    Quiz quiz1 = quizRepository.insert(quiz);
+                    return quiz1;
+//                    return ResponseEntity.ok(quiz);
                 } else {
                     throw new ResourceNotFoundException("One of the question is missing from the list");
                 }
@@ -156,8 +155,6 @@ public class QuizService {
             }
         } catch (ResourceNotFoundException exception) {
             throw new ResourceNotFoundException(exception.getMessage());
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
         }
     }
 }

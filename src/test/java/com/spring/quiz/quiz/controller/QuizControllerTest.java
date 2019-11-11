@@ -81,7 +81,7 @@ public class QuizControllerTest {
 
     @Test
     public void createQuiz() throws Exception {
-        Mockito.when(quizService.createQuiz(mockQuiz)).thenReturn(ResponseEntity.ok(mockQuiz));
+        Mockito.when(quizService.createQuiz(mockQuiz)).thenReturn(mockQuiz);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/quizzes/createQuiz")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,7 @@ public class QuizControllerTest {
 
     @Test
     public void createQuizWithQuestions() throws Exception {
-        Mockito.when(quizService.createQuizWithQuestions(mockQuiz)).thenReturn(ResponseEntity.ok(mockQuiz));
+        Mockito.when(quizService.createQuizWithQuestions(mockQuiz)).thenReturn(mockQuiz);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/quizzes/createQuizWithQuestions")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ public class QuizControllerTest {
 
     @Test
     public void deleteQuiz() throws Exception {
-        Mockito.when(quizService.deleteQuiz(mockQuiz.getId())).thenReturn(ResponseEntity.ok(mockQuiz));
+        Mockito.when(quizService.deleteQuiz(mockQuiz.getId())).thenReturn(mockQuiz);
         mockMvc.perform(MockMvcRequestBuilders
                 .delete("/quizzes/deleteQuiz/{quizId}", mockQuiz.getId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -115,7 +115,7 @@ public class QuizControllerTest {
 
     @Test
     public void updateQuiz() throws Exception {
-        Mockito.when(quizService.updateQuiz(mockQuiz, mockQuiz.getId())).thenReturn(ResponseEntity.ok(mockQuiz));
+        Mockito.when(quizService.updateQuiz(mockQuiz, mockQuiz.getId())).thenReturn(mockQuiz);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .put("/quizzes/updateQuiz/{quizId}", mockQuiz.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -127,7 +127,7 @@ public class QuizControllerTest {
 
     @Test
     public void addQuestion() throws Exception {
-        Mockito.when(quizService.addQuestion(mockQuiz.getId(), mockQuestion.getId())).thenReturn(ResponseEntity.ok(mockQuiz));
+        Mockito.when(quizService.addQuestion(mockQuiz.getId(), mockQuestion.getId())).thenReturn(mockQuiz);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .put("/quizzes/updateQuiz/quiz/{quizId}/addQuestion/{questionId}", mockQuiz.getId(), mockQuestion.getId())
                 .contentType(MediaType.APPLICATION_JSON)

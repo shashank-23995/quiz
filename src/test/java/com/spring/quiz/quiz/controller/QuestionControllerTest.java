@@ -71,20 +71,20 @@ public class QuestionControllerTest {
 
     @Test
     public void createQuestion() throws Exception {
-        Mockito.when(questionService.createQuestion(mockQuestion)).thenReturn(ResponseEntity.ok(mockQuestion));
+        Mockito.when(questionService.createQuestion(mockQuestion)).thenReturn(mockQuestion);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
         .post("/questions/createQuestion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockQuestionToString))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 //        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
     }
 
     @Test
     public void deleteQuestion() throws Exception {
-        Mockito.when(questionService.deleteQuestion(mockQuestion.getId())).thenReturn(ResponseEntity.ok(mockQuestion));
+        Mockito.when(questionService.deleteQuestion(mockQuestion.getId())).thenReturn(mockQuestion);
         mockMvc.perform(MockMvcRequestBuilders
                 .delete("/questions/deleteQuestion/{questionId}", mockQuestion.getId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -94,7 +94,7 @@ public class QuestionControllerTest {
 
     @Test
     public void updateQuestion() throws Exception {
-        Mockito.when(questionService.updateQuestion(mockQuestion, mockQuestion.getId())).thenReturn(ResponseEntity.ok(mockQuestion));
+        Mockito.when(questionService.updateQuestion(mockQuestion, mockQuestion.getId())).thenReturn(mockQuestion);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .put("/questions/updateQuestion/{id}", mockQuestion.getId())
                 .contentType(MediaType.APPLICATION_JSON)

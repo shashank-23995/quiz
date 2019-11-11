@@ -33,7 +33,7 @@ public class QuestionServiceTest {
     ArrayList<Question> mockQuestionList;
     @Before
     public void setup() {
-        mockQuestion = new Question("12345", "test statement","test option 1", "test option 2", "test option 3", "test option 4", "test answer");
+        mockQuestion = new Question("12345", "test statement","test option 1", "test option 2", "test option 3", "test option 4", "test option 1");
         mockQuestionList = new ArrayList();
         mockQuestionList.add(mockQuestion);
     }
@@ -45,31 +45,94 @@ public class QuestionServiceTest {
 
     @Test
     public void createQuestion() throws ResourceNotFoundException {
-        Mockito.when(questionService.createQuestion(mockQuestion)).thenReturn(ResponseEntity.ok(mockQuestion));
-        assertEquals(ResponseEntity.ok(mockQuestion), questionService.createQuestion(mockQuestion));
+        Mockito.when(questionRepository.insert(mockQuestion)).thenReturn(mockQuestion);
+        assertEquals(mockQuestion, questionService.createQuestion(mockQuestion));
     }
 
     @Test
     public void deleteQuestion() throws ResourceNotFoundException {
-        Mockito.when(questionService.deleteQuestion(mockQuestion.getId())).thenReturn(ResponseEntity.ok(mockQuestion));
-        assertEquals(ResponseEntity.ok(mockQuestion), questionService.createQuestion(mockQuestion));
+        Mockito.when(questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion, questionService.deleteQuestion(mockQuestion.getId()));
     }
 
     @Test
     public void updateQuestion() throws ResourceNotFoundException {
-        Mockito.when(questionService.updateQuestion(mockQuestion, mockQuestion.getId())).thenReturn(ResponseEntity.ok(mockQuestion));
-        assertEquals(ResponseEntity.ok(mockQuestion), questionService.updateQuestion(mockQuestion, mockQuestion.getId()));
+        Mockito.when(questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        Mockito.when(questionRepository.save(mockQuestion)).thenReturn(mockQuestion);
+//        Mockito.when(questionRepository.save(mockQuestion).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion, questionService.updateQuestion(mockQuestion, mockQuestion.getId()));
     }
 
     @Test
     public void getQuestionByStatement() {
-        Mockito.when(questionService.getQuestionByStatement(mockQuestion.getStatement())).thenReturn(ResponseEntity.ok(mockQuestion));
-        assertEquals(ResponseEntity.ok(mockQuestion), questionService.getQuestionByStatement(mockQuestion.getStatement()));
+        Mockito.when(questionService.getQuestionByStatement(mockQuestion.getStatement())).thenReturn(mockQuestion);
+        assertEquals(mockQuestion, questionService.getQuestionByStatement(mockQuestion.getStatement()));
     }
 
     @Test
     public void validateAnswer() throws ResourceNotFoundException {
-        Mockito.when(questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer())).thenReturn(true);
+//        Mockito.when(questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer())).thenReturn(true);
+        Mockito.when( questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
         assertEquals(true, questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer()));
+    }
+
+    @Test
+    public void deleteQuestionNotFound() throws ResourceNotFoundException {
+//        Mockito.when(questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion, questionService.deleteQuestion(mockQuestion.getId()));
+    }
+
+    @Test
+    public void validateAnswerIncorrect() throws ResourceNotFoundException {
+//        Mockito.when(questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer())).thenReturn(true);
+        Mockito.when( questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(true, questionService.validateAnswer(mockQuestion.getId(), "mockQuestion.getAnswer()"));
+    }
+
+    @Test
+    public void validateAnswerNotFound() throws ResourceNotFoundException {
+//        Mockito.when(questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer())).thenReturn(true);
+//        Mockito.when( questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(true, questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer()));
+    }
+
+    @Test
+    public void createQuestionInvalidAnswer() throws ResourceNotFoundException {
+        Question mockQuestion1 = new Question("12345", "test statement","test option 1", "test option 2", "test option 3", "test option 4", "test answer");
+        Mockito.when(questionRepository.insert(mockQuestion1)).thenReturn(mockQuestion1);
+        assertEquals(mockQuestion1, questionService.createQuestion(mockQuestion1));
+    }
+
+    @Test
+    public void createQuestionEmptyOptions() throws ResourceNotFoundException {
+        Question mockQuestion1 = new Question("12345", "test statement","", "test option 2", "test option 3", "test option 4", "test answer");
+        Mockito.when(questionRepository.insert(mockQuestion1)).thenReturn(mockQuestion1);
+        assertEquals(mockQuestion1, questionService.createQuestion(mockQuestion1));
+    }
+
+    @Test
+    public void updateQuestionEmptyOptions() throws ResourceNotFoundException {
+        Question mockQuestion1 = new Question("12345", "test statement","", "test option 2", "test option 3", "test option 4", "test option 3");
+        Mockito.when(questionRepository.findById(mockQuestion1.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion1));
+        Mockito.when(questionRepository.save(mockQuestion1)).thenReturn(mockQuestion1);
+//        Mockito.when(questionRepository.save(mockQuestion).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion1, questionService.updateQuestion(mockQuestion1, mockQuestion1.getId()));
+    }
+
+    @Test
+    public void updateQuestionInvalidAnswer() throws ResourceNotFoundException {
+        Question mockQuestion1 = new Question("12345", "test statement","test option 1", "test option 2", "test option 3", "test option 4", "test answer");
+        Mockito.when(questionRepository.findById(mockQuestion1.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion1));
+        Mockito.when(questionRepository.save(mockQuestion1)).thenReturn(mockQuestion1);
+//        Mockito.when(questionRepository.save(mockQuestion).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion1, questionService.updateQuestion(mockQuestion1, mockQuestion1.getId()));
+    }
+
+    @Test
+    public void updateQuestionQuestionNotFound() throws ResourceNotFoundException {
+//        Mockito.when(questionRepository.findById(mockQuestion.getId())).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        Mockito.when(questionRepository.save(mockQuestion)).thenReturn(mockQuestion);
+//        Mockito.when(questionRepository.save(mockQuestion).thenReturn(java.util.Optional.ofNullable(mockQuestion));
+        assertEquals(mockQuestion, questionService.updateQuestion(mockQuestion, mockQuestion.getId()));
     }
 }

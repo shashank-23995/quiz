@@ -5,7 +5,10 @@ import com.spring.quiz.quiz.model.Question;
 import com.spring.quiz.quiz.model.Quiz;
 import com.spring.quiz.quiz.model.Result;
 import com.spring.quiz.quiz.model.User;
+import com.spring.quiz.quiz.repository.QuestionRepository;
+import com.spring.quiz.quiz.repository.QuizRepository;
 import com.spring.quiz.quiz.repository.ResultRepository;
+import com.spring.quiz.quiz.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +31,18 @@ public class ResultServiceTest {
 
     @Mock
     ResultRepository resultRepository;
+
+    @Mock
+    QuizRepository quizRepository;
+
+    @Mock
+    QuestionRepository questionRepository;
+
+    @Mock
+    UserRepository userRepository;
+
+    @Mock
+    QuestionService questionService;
 
     @Mock
     Quiz quiz;
@@ -89,19 +104,37 @@ public class ResultServiceTest {
 
     @Test
     public void updateResult() {
-        Mockito.when(resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), mockSelectedOption, true)).thenReturn(ResponseEntity.ok(mockResult));
+//        Mockito.when(resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), mockSelectedOption, true)).thenReturn(mockResult);
+        Mockito.when(userRepository.findByUsername(mockUser.getEmail())).thenReturn(mockUser);
+        Mockito.when(quizRepository.findById(mockQuiz.getId())).thenReturn(Optional.ofNullable(mockQuiz));
+        Mockito.when(resultRepository.getResultObject(mockQuiz.getId(), mockUser.getId())).thenReturn(mockResult);
+        Mockito.when(resultRepository.getResultObject(mockQuiz.getId(), mockUser.getId())).thenReturn(mockResult);
+        Mockito.when(resultRepository.save(mockResult)).thenReturn(mockResult);
         assertEquals(ResponseEntity.ok(mockResult), resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), mockSelectedOption, true));
     }
 
     @Test
     public void getResultByUserQuiz() throws Exception {
-        Mockito.when(resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(ResponseEntity.ok(mockResult));
+//        Mockito.when(resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(mockResult);
+        Mockito.when(resultRepository.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(mockResult);
         assertEquals(ResponseEntity.ok(mockResult), resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId()));
     }
 
     @Test
     public void submitQuiz() throws ResourceNotFoundException {
-        Mockito.when(resultService.submitQuiz(mockUser.getId(), mockQuiz.getId(), mockResult)).thenReturn(ResponseEntity.ok(mockResult));
+//        Mockito.when(resultService.submitQuiz(mockUser.getId(), mockQuiz.getId(), mockResult)).thenReturn(mockResult);
+        Mockito.when(userRepository.findById(mockUser.getId())).thenReturn(Optional.ofNullable(mockUser));
+        Mockito.when(quizRepository.findById(mockQuiz.getId())).thenReturn(Optional.ofNullable(mockQuiz));
+        Mockito.when(resultRepository.insert(mockResult)).thenReturn(mockResult);
+        Mockito.when(questionRepository.findById(mockQuestion.getId())).thenReturn(Optional.ofNullable(mockQuestion));
+        Mockito.when(questionService.validateAnswer(mockQuestion.getId(), mockQuestion.getAnswer())).thenReturn(true);
         assertEquals(ResponseEntity.ok(mockResult), resultService.submitQuiz(mockUser.getId(), mockQuiz.getId(), mockResult));
+    }
+
+    @Test
+    public void getResultByUserQuizNotFound() throws Exception {
+//        Mockito.when(resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(mockResult);
+//        Mockito.when(resultRepository.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(mockResult);
+        assertEquals(ResponseEntity.ok(mockResult), resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId()));
     }
 }

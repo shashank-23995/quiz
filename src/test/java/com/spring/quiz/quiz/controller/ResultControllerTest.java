@@ -81,7 +81,7 @@ public class ResultControllerTest {
     @Test
     public void selectAnswer() throws Exception {
         String mockSelectedOption = "test_selected_option";
-        Mockito.when(resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), "test_selected_option", true)).thenReturn(ResponseEntity.ok(mockResult));
+        Mockito.when(resultService.updateResult(mockQuiz.getId(), mockQuestion.getId(), "test_selected_option", true)).thenReturn(mockResult);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/results/submitAnswer/quiz/{quizId}/question/{questionId}/answer/{selectedOption}", mockQuiz.getId(), mockQuestion.getId(), mockSelectedOption)
                 .accept(MediaType.APPLICATION_JSON))
@@ -92,7 +92,7 @@ public class ResultControllerTest {
 
     @Test
     public void getResultByUserQuiz() throws Exception {
-        Mockito.when(resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(ResponseEntity.ok(mockResult));
+        Mockito.when(resultService.getResultByUserQuiz(mockUser.getId(), mockQuiz.getId())).thenReturn(mockResult);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/results/user/{userId}/quiz/{quizId}", mockUser.getId(), mockQuiz.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -103,7 +103,7 @@ public class ResultControllerTest {
 
     @Test
     public void submitQuiz() throws Exception {
-        Mockito.when(resultService.submitQuiz(mockUser.getId(), mockQuiz.getId(), mockResult)).thenReturn(ResponseEntity.ok(mockResult));
+        Mockito.when(resultService.submitQuiz(mockUser.getId(), mockQuiz.getId(), mockResult)).thenReturn(mockResult);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/results/submitQuiz/user/{userId}/quiz/{quizId}", mockUser.getId(), mockQuiz.getId())
                 .contentType(MediaType.APPLICATION_JSON)
